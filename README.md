@@ -1,4 +1,4 @@
-# 💄 Glamour Studio — Luxury Makeup Artist Website
+# 💄 Makeup Artist Website
 
 A professional, fully-editable Next.js website for makeup artists with Cloudinary image storage, a built-in CMS admin panel, and one-click Vercel deployment.
 
