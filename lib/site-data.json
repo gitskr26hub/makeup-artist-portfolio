@@ -1,0 +1,223 @@
+{
+  "hero": {
+    "badge": "Professional Makeup Artist | Mehndi Designer",
+    "headline": "Where Beauty",
+    "headlineAccent": "Meets Art",
+    "subheadline": "Transformative makeup artistry for weddings, editorials, film & special occasions. Based in Lucknow | Available across India.",
+    "ctaPrimary": "Book a Session",
+    "ctaSecondary": "View Portfolio",
+    "heroImage": [
+      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772814706/WhatsApp_Image_2026-02-28_at_10.52.53_2_ujcrnn.webp",
+      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804740/WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo.webp",
+      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772819048/WhatsApp_Image_gtxakd.webp"
+    ],
+    "stats": [
+      {
+        "value": "10+",
+        "label": "Happy Brides"
+      },
+      {
+        "value": "2+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "5+",
+        "label": "Editorial Shoots"
+      }
+    ]
+  },
+  "about": {
+    "badge": "About Me",
+    "headline": "Passion for Perfection",
+    "bio": "Hi, I'm Roma — a Lucknow, India-based makeup artist with over 2+ years of experience transforming faces for weddings, editorial shoots, film, and runway. My philosophy is simple: every face tells a story, and I'm here to help tell yours.",
+    "bio2": "Trained at the prestigious Makeup Designory in VLCC Institute Lucknow, I've worked with top fashion magazines, brides, and film productions across India.",
+    "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-03-05_at_15.38.36_multmn.webp",
+    "skills": [
+      "Bridal Makeup",
+      "Engagement Makeup",
+      "Party Makeup",
+      "Haldi-Mendi Makeup",
+      "Cocktail Makeup",
+      "Royal & treditional Bride Makeup",
+      "Editorial",
+      "Mehndi Design",
+      "Runway",
+      "Airbrush"
+    ],
+    "signature": "Roma Rawat"
+  },
+  "services": {
+    "badge": "Services",
+    "headline": "Artistry for Every Occasion",
+    "subheadline": "Each service is tailored to bring out your unique beauty with precision and care.",
+    "items": [
+      {
+        "id": "bridal",
+        "icon": "heart",
+        "title": "Bridal Makeup",
+        "description": "Your wedding day is your most photographed day. I create a look that photographs beautifully and lasts from vows to last dance.",
+        "price": "From Rs 8000/-",
+        "features": [
+          "Trial session included",
+          "Touch-up kit provided",
+          "On-location service",
+          "Bridesmaids available"
+        ]
+      },
+      {
+        "id": "editorial",
+        "icon": "camera",
+        "title": "Editorial & Fashion",
+        "description": "High-fashion looks for magazine shoots, lookbooks, and commercial campaigns. Bold, innovative, and camera-ready.",
+        "price": "From Rs 3000/-",
+        "features": [
+          "Concept collaboration",
+          "Multiple look changes",
+          "Full day availability",
+          "Published work portfolio"
+        ]
+      },
+      {
+        "id": "special",
+        "icon": "sparkles",
+        "title": "Special Occasions",
+        "description": "Whether it's a gala, birthday celebration, or intimate dinner, look and feel your absolute best for every moment.",
+        "price": "From Rs 2500/-",
+        "features": [
+          "Personalized consultation",
+          "Long-lasting formula",
+          "Skin prep included",
+          "Flexible scheduling"
+        ]
+      },
+      {
+        "id": "lessons",
+        "icon": "graduation-cap",
+        "title": "Makeup Masterclass",
+        "description": "Private one-on-one lessons to learn professional techniques tailored to your face, skin tone, and lifestyle.",
+        "price": "From Rs 600/hr",
+        "features": [
+          "Personalized curriculum",
+          "Technique demos",
+          "Product recommendations",
+          "Take-home guide"
+        ]
+      }
+    ]
+  },
+  "portfolio": {
+    "badge": "Portfolio",
+    "headline": "The Art of Transformation",
+    "subheadline": "A curated selection of my most celebrated work across weddings, editorial, and fashion.",
+    "categories": [
+      "All",
+      "Bridal",
+      "Editorial",
+      "Fashion",
+      "Film"
+    ],
+    "items": [
+      {
+        "id": "1",
+        "category": "Bridal",
+        "title": "Timeless Elegance",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804740/WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo.webp"
+      },
+      {
+        "id": "2",
+        "category": "Editorial",
+        "title": "Shoot 2026",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_1_hwxqbo.webp"
+      },
+      {
+        "id": "3",
+        "category": "Fashion",
+        "title": "IN Collection",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.54_1_cixc9l.webp"
+      },
+      {
+        "id": "4",
+        "category": "Bridal",
+        "title": "Garden Romance",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_qerljf.webp"
+      },
+      {
+        "id": "5",
+        "category": "Editorial",
+        "title": "Bold & Beautiful",
+        "image": "https://images.unsplash.com/photo-1500840216050-6ffa99d75160?w=600&q=80"
+      },
+      {
+        "id": "6",
+        "category": "Film",
+        "title": "Drama",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.54_wejvxl.webp"
+      },
+      {
+        "id": "7",
+        "category": "Fashion",
+        "title": "Summer Campaign",
+        "image": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80"
+      },
+      {
+        "id": "8",
+        "category": "Bridal",
+        "title": "Modern Romance",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.53_1_tk5owo.webp"
+      },
+      {
+        "id": "9",
+        "category": "Treditional",
+        "title": "School Function",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772820071/WhatsApp_Image_2026-02-01_at_15.32.40_muju2a.webp"
+      },
+      {
+        "id": "10",
+        "category": "Treditional",
+        "title": "School Function",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772820280/WhatsApp_Image_2026-02-01_at_15.32.40_1_tjlyv2.webp"
+      }
+
+    ]
+  },
+  "testimonials": {
+    "badge": "Testimonials",
+    "headline": "Stories from Real Clients",
+    "items": [
+      {
+        "id": "1",
+        "name": "Manikarnika",
+        "role": "Model",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_1_hwxqbo.webp",
+        "text": "Roma is an absolute magician. I looked like a better version of myself. She understood my vision perfectly and executed it flawlessly.",
+        "rating": 5,
+        "date": "Feb 2026"
+      },
+      {
+        "id": "2",
+        "name": "Vibha Mishra",
+        "role": "Makeup Artist",
+        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772819819/preeti.png_xz5hvh.webp",
+        "text": "We've worked with Roma on three editorial shoots now. Her technical skill is extraordinary and she brings such creative energy to every project. A true professional.",
+        "rating": 5,
+        "date": "Jan 2026"
+      }
+    ]
+  },
+  "contact": {
+    "badge": "Get in Touch",
+    "headline": "Let's Create Something Beautiful",
+    "subheadline": "Ready to transform your look? I'd love to hear about your vision.",
+    "email": "roma741996@gmail.com",
+    "phone": "+917985273144",
+    "whatsapp": "+917985273144",
+    "location": "Lucknow City, Available across India",
+    "instagram": "@roma.rawat.524",
+    "availability": "Currently booking for 2025 weddings and editorial projects."
+  },
+  "seo": {
+    "title": "Roma Rawat | Makeup Artist",
+    "description": "Professional makeup artist based in Lucknow City. Specializing in bridal, editorial, film, and fashion makeup. Transformative artistry for every occasion.",
+    "keywords": "makeup artist India, bridal makeup Lucknow, editorial makeup, luxury makeup artist"
+  }
+}
