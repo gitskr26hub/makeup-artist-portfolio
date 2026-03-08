@@ -29,7 +29,7 @@ export type AboutData = {
   headline: string;
   bio: string;
   bio2: string;
-  image: string;
+  aboutImages: Array<string>;
   skills: string[];
   signature: string;
 };

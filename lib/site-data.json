@@ -32,7 +32,8 @@
     "headline": "Passion for Perfection",
     "bio": "Hi, I'm Roma — a Lucknow, India-based makeup artist with over 2+ years of experience transforming faces for weddings, editorial shoots, film, and runway. My philosophy is simple: every face tells a story, and I'm here to help tell yours.",
     "bio2": "Trained at the prestigious Makeup Designory in VLCC Institute Lucknow, I've worked with top fashion magazines, brides, and film productions across India.",
-    "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944520/WhatsApp_Image_2026-03-05_at_15.38.36_multmn.webp",
+    "aboutImages": ["https://res.cloudinary.com/dss0abc9o/image/upload/v1772944520/WhatsApp_Image_2026-03-05_at_15.38.36_multmn.webp",
+    "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944994/WhatsApp_Image_2026-03-08_at_09.54.14_emouox.webp"],
     "skills": [
       "Bridal Makeup",
       "Engagement Makeup",
