@@ -263,7 +263,7 @@ function AboutEditor({ data, onChange, uploadImage, uploading }: { data: AboutDa
     <div className="space-y-6">
       <div className="glass-card rounded-2xl p-6 space-y-5">
         <h3 className="font-display text-lg text-champagne-200">Profile Image</h3>
-        <ImageUploader current={data.image} uploading={uploading} onUpload={(url) => onChange({ ...data, image: url })} />
+        {/* <ImageUploader current={data.image} uploading={uploading} onUpload={(url) => onChange({ ...data, image: url })} /> */}
       </div>
       <div className="glass-card rounded-2xl p-6 space-y-5">
         <h3 className="font-display text-lg text-champagne-200">Text Content</h3>
