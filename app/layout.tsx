@@ -12,9 +12,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: data.seo.description,
       keywords: data.seo.keywords,
       icons: {
-        icon: "/favicon.ico",
-        shortcut: "/favicon.ico",
-        apple: "/favicon.ico",
+        icon: "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944631/White_Black_Minimal_Elegant_Makeup_Artist_Logo_f4pm4s.webp",
+        shortcut: "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944631/White_Black_Minimal_Elegant_Makeup_Artist_Logo_f4pm4s.webp",
+        apple: "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944631/White_Black_Minimal_Elegant_Makeup_Artist_Logo_f4pm4s.webp",
       },
       openGraph: {
         title: data.seo.title,

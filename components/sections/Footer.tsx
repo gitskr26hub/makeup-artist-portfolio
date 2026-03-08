@@ -65,7 +65,7 @@ export default function Footer({ data }: { data: SiteData }) {
             © {new Date().getFullYear()} Roma Makeup Studio. All rights reserved.
           </p>
           <p className="font-body text-xs text-champagne-400/30 flex items-center gap-1">
-            Made with <Heart size={10} className="text-champagne-600 fill-champagne-600" /> in New York City
+            Made with <Heart size={10} className="text-champagne-600 fill-champagne-600" /> in Lucknow City, India.
           </p>
         </div>
       </div>
