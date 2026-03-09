@@ -60,9 +60,9 @@ export default function HeroSection({ data }: { data: HeroData }) {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-20 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-20 grid lg:grid-cols-2 gap-16 items-center ">
         {/* Left - Text content */}
-        <div className="space-y-8">
+        <div className="space-y-8  order-2 lg:order-1 ">
           {/* Badge */}
           <div
             className="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full border border-champagne-700/40 bg-champagne-900/20"
@@ -133,7 +133,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
 
         {/* Right - Hero image */}
         <div
-          className="reveal relative"
+          className="reveal relative order-1 lg:order-2"
           style={{ transitionDelay: "0.3s" }}
         >
           {/* Frame decoration */}
