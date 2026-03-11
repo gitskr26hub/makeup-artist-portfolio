@@ -54,7 +54,7 @@ export default function ContactSection({ data }: { data: ContactData }) {
                    href: `https://wa.me/${data.whatsapp}?text=Hello%20I%20want%20to%20book%20a%20makeup%20appointment` },
                 { icon: <MapPin size={18} />, label: "Location", value: data.location, 
                 href: `https://www.google.com/maps/place/Lucknow,+Uttar+Pradesh/@26.8485965,80.7777009,11z/data=!3m1!4b1!4m6!3m5!1s0x399bfd991f32b16b:0x93ccba8909978be7!8m2!3d26.8466937!4d80.946166!16zL20vMDIydHE0?entry=ttu&g_ep=EgoyMDI2MDMwMi4wIKXMDSoASAFQAw%3D%3D` },
-                { icon: <Instagram size={18} />, label: "Instagram", value: data.instagram, href: `https://instagram.com/${data.instagram.replace("@","")}` },
+                { icon: <Instagram size={18} />, label: "Instagram", value: data?.instagram, href: `https://instagram.com/${data?.instagram?.replace("@","")}` },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-4 group">
                   <div className="w-10 h-10 rounded-xl bg-champagne-900/40 border border-champagne-800/30 flex items-center justify-center text-champagne-500 group-hover:bg-champagne-800/40 transition-colors flex-shrink-0">

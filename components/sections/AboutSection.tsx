@@ -31,46 +31,45 @@ export default function AboutSection({ data }: { data: AboutData }) {
           {/* Left - Image */}
           <div className="relative max-w-[600px]">
 
-  {/* Decorative Frame */}
-  <div className="absolute top-8 -left-8 w-full h-full rounded-2xl border border-champagne-700/20 pointer-events-none" />
+            {/* Decorative Frame */}
+            <div className="absolute top-8 -left-8 w-full h-full rounded-2xl border border-champagne-700/20 pointer-events-none" />
 
-  {/* Slider */}
-  <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-champagne-900/30 img-zoom">
+            {/* Slider */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-champagne-900/30 img-zoom">
 
-    {data.aboutImages.map((img, index) => (
-      <div
-        key={index}
+              {data?.aboutImages?.map((img, index) => (
+                <div
+                  key={index}
 
-        
-        className={`transition-opacity duration-1000 ${
-          index === current ? "opacity-100" : "opacity-0 absolute inset-0"
-        }`}
-      >
-        <Image
-          src={img}
-          alt="About"
-          width={600}
-          height={750}
-          className="object-cover w-full transition-all duration-700 hover:scale-110 hover:brightness-110"
-          // className="w-full h-auto object-contain"
-          priority={index === 0}
-        />
-      </div>
-    ))}
 
-  </div>
+                  className={`transition-opacity duration-1000 ${index === current ? "opacity-100" : "opacity-0 absolute inset-0"
+                    }`}
+                >
+                  <Image
+                    src={img}
+                    alt="About"
+                    width={600}
+                    height={750}
+                    className="object-cover w-full transition-all duration-700 hover:scale-110 hover:brightness-110"
+                    // className="w-full h-auto object-contain"
+                    priority={index === 0}
+                  />
+                </div>
+              ))}
 
-  {/* Floating Badge */}
-  <div className="absolute -bottom-6 -right-6 glass-card rounded-2xl p-6 border border-champagne-700/30">
-    <div className="font-display text-5xl text-champagne-400 font-semibold leading-none">
-      2+
-    </div>
-    <div className="font-body text-xs text-champagne-300/70 tracking-wider uppercase mt-2">
-      Years of<br />Artistry
-    </div>
-  </div>
+            </div>
 
-</div>
+            {/* Floating Badge */}
+            <div className="absolute -bottom-6 -right-6 glass-card rounded-2xl p-6 border border-champagne-700/30">
+              <div className="font-display text-5xl text-champagne-400 font-semibold leading-none">
+                {data.experienceYear}+ 
+              </div>
+              <div className="font-body text-xs text-champagne-300/70 tracking-wider uppercase mt-2">
+                Years of<br />Artistry
+              </div>
+            </div>
+
+          </div>
 
           {/* Right - Content */}
           <div className="space-y-8">
@@ -105,7 +104,7 @@ export default function AboutSection({ data }: { data: AboutData }) {
             {/* Signature */}
             <div>
               <p className="font-display text-3xl italic text-champagne-400">{data.signature}</p>
-              <p className="font-body text-xs text-champagne-300/50 tracking-wider uppercase mt-1">Makeup Artist | Mehndi Designer</p>
+              <p className="font-body text-xs text-champagne-300/50 tracking-wider uppercase mt-1">{data.profession}</p>
             </div>
 
             <a href="#contact" className="btn-gold inline-block px-8 py-4 rounded-full font-body text-sm tracking-widest uppercase">

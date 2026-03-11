@@ -224,8 +224,8 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
                       key={realIndex}
                       onClick={() => setCurrent(realIndex)}
                       className={`w-2 h-2 rounded-full transition-all ${current === realIndex
-                          ? "bg-white scale-125"
-                          : "bg-white/40"
+                        ? "bg-white scale-125"
+                        : "bg-white/40"
                         }`}
                     />
                   );

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Instagram, Mail, Heart } from "lucide-react";
-import type { SiteData } from "@/lib/content";
+import type { ContactData, firstName, lastName } from "@/lib/content";
 
-export default function Footer({ data }: { data: SiteData }) {
+export default function Footer({ contact, firstName, lastName }: { contact: ContactData, firstName: firstName, lastName: lastName }) {
   return (
     <footer className="bg-obsidian-900 border-t border-champagne-900/20 py-16">
       <div className="max-w-7xl mx-auto px-6">
@@ -10,18 +10,18 @@ export default function Footer({ data }: { data: SiteData }) {
           {/* Brand */}
           <div className="md:col-span-2 space-y-4">
             <div>
-              <span className="font-display text-2xl text-champagne-100">Roma <em className="text-champagne-400">Rawat</em></span>
+              <span className="font-display text-2xl text-champagne-100">{firstName} <em className="text-champagne-400">{lastName}</em></span>
               <p className="font-body text-xs text-champagne-400/50 tracking-widest uppercase mt-1">Makeup Artistry</p>
             </div>
             <p className="font-body text-sm text-champagne-200/50 leading-relaxed max-w-xs">
               Transformative makeup artistry for weddings, editorials, film & fashion. Available across India.
             </p>
             <div className="flex gap-3">
-              <a href={`https://instagram.com/${data.contact.instagram.replace("@","")}`} target="_blank" rel="noopener noreferrer"
+              <a href={`https://instagram.com/${contact?.instagram.replace("@", "")}`} target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full border border-champagne-800/30 flex items-center justify-center text-champagne-500/60 hover:text-champagne-400 hover:border-champagne-600/50 transition-colors">
                 <Instagram size={15} />
               </a>
-              <a href={`mailto:${data.contact.email}`}
+              <a href={`mailto:${contact.email}`}
                 className="w-9 h-9 rounded-full border border-champagne-800/30 flex items-center justify-center text-champagne-500/60 hover:text-champagne-400 hover:border-champagne-600/50 transition-colors">
                 <Mail size={15} />
               </a>
@@ -46,9 +46,9 @@ export default function Footer({ data }: { data: SiteData }) {
           <div>
             <p className="font-body text-xs text-champagne-400/60 tracking-[0.2em] uppercase mb-4">Contact</p>
             <ul className="space-y-3">
-              <li className="font-body text-sm text-champagne-200/50">{data.contact.email}</li>
-              <li className="font-body text-sm text-champagne-200/50">{data.contact.phone}</li>
-              <li className="font-body text-sm text-champagne-200/50">{data.contact.location}</li>
+              <li className="font-body text-sm text-champagne-200/50">{contact.email}</li>
+              <li className="font-body text-sm text-champagne-200/50">{contact.phone}</li>
+              <li className="font-body text-sm text-champagne-200/50">{contact.location}</li>
               <li>
                 <Link href="/admin" className="font-body text-xs text-champagne-700/40 hover:text-champagne-500 transition-colors">
                   Admin Portal

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Lock, Eye, EyeOff } from "lucide-react";
+import { COOKIE_NAME } from "@/lib/auth";
 
 export default function AdminLoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -18,14 +19,29 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(form),
       });
       const data = await res.json();
       if (res.ok) {
         toast.success("Welcome back!");
-        router.push("/admin/dashboard");
+        // console.log("LOGIN SUCCESS");
+
+        // console.log({ data })
+        sessionStorage.setItem(COOKIE_NAME, data.token);      
+        // router.push("/admin/dashboard");
+        // const cookies = document.cookie;
+        // console.log("BROWSER COOKIES==>:", {cookies});
+
+   
+
+        router.push("/admin/dash");
+        router.refresh();
+       
+
+
       } else {
-        toast.error(data.message || "Invalid credentials");
+        toast.error(data.message || "Invalid credentials!!");
       }
     } catch {
       toast.error("Login failed. Please try again.");
@@ -43,7 +59,7 @@ export default function AdminLoginPage() {
             <Lock size={20} className="text-champagne-400" />
           </div>
           <h1 className="font-display text-3xl text-champagne-100">Admin Portal</h1>
-          <p className="font-body text-sm text-champagne-400/50 mt-2">Glamour Studio CMS</p>
+          <p className="font-body text-sm text-champagne-400/50 mt-2">Studio CMS</p>
         </div>
 
         <div className="glass-card rounded-2xl p-8">
@@ -84,9 +100,9 @@ export default function AdminLoginPage() {
           </form>
         </div>
 
-        <p className="text-center font-body text-xs text-champagne-400/30 mt-6">
+        {/* <p className="text-center font-body text-xs text-champagne-400/30 mt-6">
           Set credentials in your <code className="text-champagne-600">.env.local</code> file
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -1,9 +1,19 @@
+// import { getContentRepo } from "@/repositories/admin.repository";
 import fs from "fs";
 import path from "path";
 
 const DATA_FILE = path.join(process.cwd(), "lib", "site-data.json");
+// const DATA_FILE = getContentRepo();
+export type timeStamp = string;
+export type firstName = string;
+export type lastName = string;
+
 
 export type SiteData = {
+  timeStamp: timeStamp;
+  firstName: firstName;
+  lastName: lastName;
+  
   hero: HeroData;
   about: AboutData;
   services: ServicesData;
@@ -12,6 +22,11 @@ export type SiteData = {
   contact: ContactData;
   seo: SEOData;
 };
+
+
+
+
+
 
 export type HeroData = {
   badge: string;
@@ -26,6 +41,8 @@ export type HeroData = {
 
 export type AboutData = {
   badge: string;
+  profession: string;
+  experienceYear: string;
   headline: string;
   bio: string;
   bio2: string;
@@ -83,6 +100,8 @@ export type TestimonialsData = {
 
 export type ContactData = {
   badge: string;
+  firstName: string;
+  lastName: string;
   headline: string;
   subheadline: string;
   email: string;

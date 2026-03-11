@@ -10,14 +10,18 @@ export async function POST(req: NextRequest) {
     }
 
     const token = generateToken(email);
+    // console.log(token)
 
-    const res = NextResponse.json({ success: true });
+    const res = NextResponse.json({ success: true, token });
+
+
     res.cookies.set(COOKIE_NAME, token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure:false ,
+      // secure:false || process.env.NEXT_PUBLIC_NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 24, // 24 hours
-      path: "/",
+      path: "/admin/dashboard",
     });
 
     return res;

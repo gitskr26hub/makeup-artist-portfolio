@@ -34,6 +34,14 @@ export async function GET() {
 
     const { getSiteData } = await import("@/lib/content");
     const data = getSiteData();
+
+    if (!data?.timeStamp) {
+      // call the firebase api and write data to site-data.json with timestamp 
+
+    }
+
+
+
     return NextResponse.json(data);
   } catch {
     return NextResponse.json({ message: "Failed to fetch content" }, { status: 500 });

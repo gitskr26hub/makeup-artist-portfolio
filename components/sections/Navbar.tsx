@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Instagram } from "lucide-react";
-import type { ContactData } from "@/lib/content";
+import type { ContactData, firstName, lastName } from "@/lib/content";
 
-export default function Navbar({ contact }: { contact: ContactData }) {
+export default function Navbar({ contact, firstName, lastName }:
+  { contact: ContactData, firstName: firstName, lastName: lastName }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,11 +26,10 @@ export default function Navbar({ contact }: { contact: ContactData }) {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
           ? "bg-obsidian-900/95 backdrop-blur-md border-b border-champagne-800/20 py-3"
           : "bg-transparent py-6"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
@@ -38,7 +38,7 @@ export default function Navbar({ contact }: { contact: ContactData }) {
             <span className="text-champagne-400 text-xs font-display font-semibold">R</span>
           </div>
           <span className="text-4xl font-display text-champagne-100 tracking-wide group-hover:text-champagne-300 transition-colors">
-             Roma<span className="italic text-champagne-400"> Rawat</span>
+            {firstName}<span className="italic text-champagne-400"> {lastName}</span>
           </span>
         </Link>
 
@@ -58,8 +58,8 @@ export default function Navbar({ contact }: { contact: ContactData }) {
         {/* CTA + Social */}
         <div className="hidden md:flex items-center gap-4">
           <a
-            href={`https://instagram.com/${contact.instagram.replace("@", "")}`}          
-            target="_blank"  
+            href={`https://instagram.com/${contact.instagram.replace("@", "")}`}
+            target="_blank"
             rel="noopener noreferrer"
             className="text-champagne-400/60 hover:text-champagne-400 transition-colors"
           >

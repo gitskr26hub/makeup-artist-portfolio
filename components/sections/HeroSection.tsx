@@ -206,7 +206,7 @@ export default function HeroSection({ data }: { data: HeroData }) {
                   </div>
                   <div>
                     <div className="font-display text-xl text-champagne-100 font-semibold">
-                      Roma Rawat
+                      Roma 
                     </div>
                     <div className="font-body text-xs text-champagne-400/70">
                       Lucknow · Available across India

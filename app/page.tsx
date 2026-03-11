@@ -7,20 +7,31 @@ import PortfolioSection from "@/components/sections/PortfolioSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/sections/Footer";
+import { getContentRepo, updateContentRepo } from "@/repositories/admin.repository";
 
-export default function Home() {
-  const data = getSiteData();
+
+export default async function Home() {
+
+  const data = await getContentRepo()
+
+  // console.log("content==>", { DATA__ })
+
+
+
+
+  // await updateContentRepo(data);
 
   return (
     <main className="min-h-screen bg-obsidian-950">
-      <Navbar contact={data.contact} />
-      <HeroSection data={data.hero} />
-      <AboutSection data={data.about} />
-      <ServicesSection data={data.services} />
-      <PortfolioSection data={data.portfolio} />
-      <TestimonialsSection data={data.testimonials} />
-      <ContactSection data={data.contact} />
-      <Footer data={data} />
+      {data && <>
+        <Navbar contact={data?.contact} firstName={data.firstName} lastName={data.lastName} />
+        <HeroSection data={data.hero} />
+        <AboutSection data={data.about} />
+        <ServicesSection data={data.services} />
+        <PortfolioSection data={data.portfolio} />
+        <TestimonialsSection data={data.testimonials} />
+        <ContactSection data={data.contact} />
+        <Footer contact={data?.contact} firstName={data.firstName} lastName={data.lastName} /></>}
     </main>
   );
 }
