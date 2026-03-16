@@ -102,7 +102,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
 
           {filtered.map((item, index) => {
-            console.log("filtered==>",{item})
+            // console.log("filtered==>",{item})
             return (<div
               key={item.id}
               className="relative group cursor-pointer rounded-xl overflow-hidden img-zoom"
