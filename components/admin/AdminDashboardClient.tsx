@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useRef, SetStateAction, Dispatch } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -12,8 +12,7 @@ import {
   Star
 } from "lucide-react";
 import type { SiteData, HeroData, AboutData, ServicesData, PortfolioData, ContactData, heroImage } from "@/lib/content";
-import { updateContentRepo } from "@/repositories/admin.repository";
-import { deleteImage } from "@/lib/cloudinary";
+
 import { Loader } from "../sections/Loader";
 import { ProcessingBtn } from "../sections/ProcessingBtn";
 
@@ -41,13 +40,22 @@ export default function AdminDashboardClient({ initialData }: { initialData: Sit
     setSaving(true);
 
     try {
-      console.log(data);
-      const isUpdated: any = await updateContentRepo(data);
-      if (isUpdated) {
-        toast.success("Changes saved successfully!");
-      } else {
+
+      const res = await fetch("/api/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ section, data }),
+      });
+      const DATA_ = await res.json();
+      if (res.ok) {
+         toast.success("Changes saved successfully!");
+      }
+      // const isUpdated: any = await updateContentRepo(data);
+      else {
         toast.error("Save failed. Please try again.");
       }
+      setSaving(false);
     } catch {
       toast.error("Network error.");
     } finally {
@@ -617,7 +625,7 @@ function AboutEditor({ data, onChange, uploadImage, uploading }: { data: AboutDa
     } catch (error) {
 
       console.error(error);
-      
+
     } finally {
       setLoading(false)
     }
@@ -762,8 +770,8 @@ function ServicesEditor({ data, onChange }: { data: ServicesData; onChange: (d: 
 function PortfolioEditor({ data, onChange, uploadImage, uploading }: { data: PortfolioData; onChange: (d: PortfolioData) => void; uploadImage: (f: File, cb: (url: string) => void) => void; uploading: boolean }) {
   const [loading, setLoading] = useState(false);
   console.log(JSON.stringify(data))
-  
-  
+
+
   const handleImageUpload = async (files: FileList) => {
     setLoading(true)
     try {
@@ -795,7 +803,7 @@ function PortfolioEditor({ data, onChange, uploadImage, uploading }: { data: Por
     } catch (error) {
 
       console.error(error);
-     
+
     } finally {
       setLoading(false)
     }

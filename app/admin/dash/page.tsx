@@ -21,7 +21,7 @@ export default async function AdminDashBoard() {
 
     // const data = getSiteData();
     const data = await getContentRepo() as SiteData;;
-    // console.log("AdminDashBoard==>",{data})
+     console.log("AdminDashBoard==>",{data})   
 
     if (!data) {return <Loader />}
 

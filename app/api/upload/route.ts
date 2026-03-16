@@ -4,10 +4,23 @@ import cloudinary from "@/lib/cloudinary";
 import { validateImageFiles } from "@/utils/validateImageFiles";
 
 import { getContentRepo, updateContentRepo } from "@/repositories/admin.repository";
+import { getAdminFromCookies } from "@/lib/auth";
 
 
 export async function POST(req: Request) {
   try {
+
+    const isAdmin = await getAdminFromCookies();
+    if (!isAdmin) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+
+
+
+
+
+
     const formData = await req.formData();
 
     const files = formData.getAll("files") as File[];

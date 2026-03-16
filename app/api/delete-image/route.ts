@@ -2,10 +2,15 @@ import { NextResponse } from "next/server";
 
 import { deleteImage, getPublicIdFromCloudinaryUrl } from "@/lib/cloudinary";
 import { getContentRepo, updateContentRepo } from "@/repositories/admin.repository";
+import { getAdminFromCookies } from "@/lib/auth";
 
 export async function POST(req: Request) {
 
     try {
+        const isAdmin = await getAdminFromCookies();
+        if (!isAdmin) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
 
         const { imgItem, collectionName, ImgArrName, } = await req.json();
 
@@ -14,12 +19,11 @@ export async function POST(req: Request) {
         if (!collectionName) throw new Error(`Url is not valid!`);
         if (!ImgArrName) throw new Error(`Url is not valid!`);
 
-        let publicId;
-        if (collectionName == "portfolio") {
-            publicId = imgItem.publicId || getPublicIdFromCloudinaryUrl(imgItem.url);
-        }
-        else { publicId = imgItem.publicId || getPublicIdFromCloudinaryUrl(imgItem.url); }
-        console.log({ publicId, })
+        console.log({ imgItem });
+
+        let publicId = imgItem.publicId || getPublicIdFromCloudinaryUrl(imgItem?.url);
+        console.log({ publicId, });
+
         if (!publicId) {
             return NextResponse.json(
                 { error: "Missing publicId" },
@@ -36,15 +40,32 @@ export async function POST(req: Request) {
             throw new Error("Website data not found!");
         }
 
-        const updatedData = {
-            ...data,
-            [collectionName]: {
-                ...(data?.[collectionName] ?? {}),
-                [ImgArrName]: (data?.[collectionName]?.[ImgArrName] ?? []).filter(
-                    (item: any) => item?.image.url && item?.image?.publicId !== publicId
-                ),
-            },
-        };
+        let updatedData = {}
+
+        if (collectionName === "portfolio") {
+            updatedData = {
+                ...data,
+                [collectionName]: {
+                    ...(data?.[collectionName] ?? {}),
+                    [ImgArrName]: (data?.[collectionName]?.[ImgArrName] ?? []).filter(
+                        (item: any) => item?.image?.url && item?.image?.publicId !== publicId
+                    ),
+                },
+            };
+        }
+        else {
+            updatedData = {
+                ...data,
+                [collectionName]: {
+                    ...(data?.[collectionName] ?? {}),
+                    [ImgArrName]: (data?.[collectionName]?.[ImgArrName] ?? []).filter(
+                        (item: any) => item?.url && item?.publicId !== publicId
+                    ),
+                },
+            };
+        }
+
+        // console.log({collectionName, },updatedData[collectionName],)
 
         await updateContentRepo(updatedData);
 
@@ -55,7 +76,7 @@ export async function POST(req: Request) {
         });
 
     } catch (error) {
-
+        console.log(error)
         return NextResponse.json(
             { error: "Delete failed" },
             { status: 500 }

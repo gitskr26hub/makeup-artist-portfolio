@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminFromCookies } from "@/lib/auth";
 import { updateSection } from "@/lib/content";
 import type { SiteData } from "@/lib/content";
+import { getContentRepo, updateContentRepo } from "@/repositories/admin.repository";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,9 +13,33 @@ export async function POST(req: NextRequest) {
 
     const { section, data } = await req.json();
 
+    console.log({ section, data })
+
     if (!section || !data) {
       return NextResponse.json({ message: "Missing section or data" }, { status: 400 });
     }
+
+    const FUll_data = await getContentRepo();
+
+    if (!data) {
+      throw new Error("Website data not found!");
+    }
+
+    const updatedData = {
+      ...FUll_data,
+      [section]: data[section]
+    };
+
+  //  console.log({updatedData})
+   
+   
+   await updateContentRepo(updatedData);
+
+    return NextResponse.json({ success: true });
+
+
+
+
 
     updateSection(section as keyof SiteData, data);
 

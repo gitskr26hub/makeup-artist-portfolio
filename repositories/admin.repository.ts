@@ -49,6 +49,7 @@ export const updateContentRepo = async (data: any) => {
         console.error("FIREBASE UPDATE ERROR:", error);
         throw new Error("Failed to update website content");
     }
+   
 };
 
 export const updateSectionRepo = async (
