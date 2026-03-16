@@ -101,12 +101,13 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
         {/* Responsive Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
 
-          {filtered.map((item, index) => (
-            <div
+          {filtered.map((item, index) => {
+            console.log("filtered==>",{item})
+            return (<div
               key={item.id}
               className="relative group cursor-pointer rounded-xl overflow-hidden img-zoom"
               onClick={() => {
-                setLightbox(item.image);
+                setLightbox(item.image.url);
                 setCurrent(index)
               }}
             >
@@ -115,8 +116,8 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
               <div className="relative w-full aspect-[3/4]">
 
                 <Image
-                  src={item.image}
-                  alt={item.title}
+                  src={item?.image?.url}
+                  alt={item.title}  
                   fill
                   sizes="(max-width:768px) 50vw, (max-width:1200px) 33vw, 25vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -138,8 +139,10 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
                 </p>
               </div>
 
-            </div>
-          ))}
+            </div>)
+
+          }
+          )}
         </div>
 
         {/* View Portfolio Button */}
@@ -181,9 +184,9 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
               style={{ transform: `translateX(-${current * 100}%)` }}
             >
               {filtered.map((item, index) => (
-                <div key={index} className="min-w-full flex justify-center">
+                <div key={item?.image?.url + index} className="min-w-full flex justify-center">
                   <Image
-                    src={item.image}
+                    src={item.image.url}
                     alt="Portfolio"
                     width={1400}
                     height={900}

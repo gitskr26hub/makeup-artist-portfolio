@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Lock, Eye, EyeOff } from "lucide-react";
-import { COOKIE_NAME } from "@/lib/auth";
+const COOKIE_NAME = process.env.COOKIE_NAME!;
 
 export default function AdminLoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });

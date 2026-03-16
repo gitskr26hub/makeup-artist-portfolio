@@ -13,7 +13,7 @@ export type SiteData = {
   timeStamp: timeStamp;
   firstName: firstName;
   lastName: lastName;
-  
+
   hero: HeroData;
   about: AboutData;
   services: ServicesData;
@@ -22,6 +22,18 @@ export type SiteData = {
   contact: ContactData;
   seo: SEOData;
 };
+
+
+export type heroImage = {
+  url: string,
+  publicId: string
+}
+
+export type aboutImages = {
+  url: string,
+  publicId: string
+}
+
 
 
 
@@ -35,7 +47,7 @@ export type HeroData = {
   subheadline: string;
   ctaPrimary: string;
   ctaSecondary: string;
-  heroImage: Array<string>;
+  heroImage: Array<heroImage>;
   stats: Array<{ value: string; label: string }>;
 };
 
@@ -46,7 +58,7 @@ export type AboutData = {
   headline: string;
   bio: string;
   bio2: string;
-  aboutImages: Array<string>;
+  aboutImages: Array<aboutImages>;
   skills: string[];
   signature: string;
 };
@@ -67,11 +79,17 @@ export type ServicesData = {
   items: ServiceItem[];
 };
 
+
+export type portfolioImage = {
+  url: string,
+  publicId: string
+};
+
 export type PortfolioItem = {
   id: string;
   category: string;
   title: string;
-  image: string;
+  image: portfolioImage;
 };
 
 export type PortfolioData = {

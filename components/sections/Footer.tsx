@@ -50,7 +50,7 @@ export default function Footer({ contact, firstName, lastName }: { contact: Cont
               <li className="font-body text-sm text-champagne-200/50">{contact.phone}</li>
               <li className="font-body text-sm text-champagne-200/50">{contact.location}</li>
               <li>
-                <Link href="/admin" className="font-body text-xs text-champagne-700/40 hover:text-champagne-500 transition-colors">
+                <Link href="/admin/login" className="font-body text-xs text-champagne-700/40 hover:text-champagne-500 transition-colors">
                   Admin Portal
                 </Link>
               </li>

@@ -39,14 +39,14 @@ export default function AboutSection({ data }: { data: AboutData }) {
 
               {data?.aboutImages?.map((img, index) => (
                 <div
-                  key={index}
+                  key={index+img?.url}
 
 
                   className={`transition-opacity duration-1000 ${index === current ? "opacity-100" : "opacity-0 absolute inset-0"
                     }`}
                 >
                   <Image
-                    src={img}
+                    src={img?.url}
                     alt="About"
                     width={600}
                     height={750}

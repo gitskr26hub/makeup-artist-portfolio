@@ -58,7 +58,7 @@ export default function Navbar({ contact, firstName, lastName }:
         {/* CTA + Social */}
         <div className="hidden md:flex items-center gap-4">
           <a
-            href={`https://instagram.com/${contact.instagram.replace("@", "")}`}
+            href={`https://instagram.com/${contact?.instagram?.replace("@", "")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-champagne-400/60 hover:text-champagne-400 transition-colors"

@@ -1,31 +1,30 @@
-import { NextRequest, NextResponse } from "next/server";
-import { generateToken, isValidAdmin, COOKIE_NAME } from "@/lib/auth";
+import { NextResponse } from "next/server";
+import { signAdminToken } from "@/lib/auth";
 
-export async function POST(req: NextRequest) {
-  try {
-    const { email, password } = await req.json();
+export async function POST(req:Request){
 
-    if (!isValidAdmin(email, password)) {
-      return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
-    }
+  const {email,password} = await req.json();
 
-    const token = generateToken(email);
-    // console.log(token)
-
-    const res = NextResponse.json({ success: true, token });
-
-
-    res.cookies.set(COOKIE_NAME, token, {
-      httpOnly: true,
-      secure:false ,
-      // secure:false || process.env.NEXT_PUBLIC_NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24, // 24 hours
-      path: "/admin/dashboard",
-    });
-
-    return res;
-  } catch {
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  if(
+    email !== process.env.NEXT_PUBLIC_ADMIN_EMAIL ||
+    password !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+  ){
+    return NextResponse.json({error:"Invalid credentials"},{status:401})
   }
+
+  const token = signAdminToken({role:"admin"})
+
+  const res = NextResponse.json({success:true})
+
+  res.cookies.set({
+    name:process.env.COOKIE_NAME!,
+    value:token,
+    httpOnly:true,
+    secure:true,
+    sameSite:"strict",
+    path:"/",
+    maxAge:60*60*24
+  })
+
+  return res
 }

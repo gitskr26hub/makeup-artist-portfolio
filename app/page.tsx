@@ -12,18 +12,18 @@ import { getContentRepo, updateContentRepo } from "@/repositories/admin.reposito
 
 export default async function Home() {
 
-  const data = await getContentRepo()
+  // const data =  getSiteData()
 
   // console.log("content==>", { DATA__ })
 
+const data = await getContentRepo();
 
-
-
+// console.log({data})
   // await updateContentRepo(data);
 
   return (
     <main className="min-h-screen bg-obsidian-950">
-      {data && <>
+      { data && <>
         <Navbar contact={data?.contact} firstName={data.firstName} lastName={data.lastName} />
         <HeroSection data={data.hero} />
         <AboutSection data={data.about} />

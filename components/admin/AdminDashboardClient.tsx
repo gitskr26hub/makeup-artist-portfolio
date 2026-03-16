@@ -1,6 +1,8 @@
+
+
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, SetStateAction, Dispatch } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -9,8 +11,11 @@ import {
   LogOut, Upload, Save, Plus, Trash2, X, Settings, Eye, Menu,
   Star
 } from "lucide-react";
-import type { SiteData, HeroData, AboutData, ServicesData, PortfolioData, ContactData } from "@/lib/content";
+import type { SiteData, HeroData, AboutData, ServicesData, PortfolioData, ContactData, heroImage } from "@/lib/content";
 import { updateContentRepo } from "@/repositories/admin.repository";
+import { deleteImage } from "@/lib/cloudinary";
+import { Loader } from "../sections/Loader";
+import { ProcessingBtn } from "../sections/ProcessingBtn";
 
 const tabs = [
   { id: "hero", label: "Hero", icon: Home },
@@ -32,7 +37,9 @@ export default function AdminDashboardClient({ initialData }: { initialData: Sit
 
 
   const saveSection = async (section: keyof SiteData) => {
+    if (saving) return;
     setSaving(true);
+
     try {
       console.log(data);
       const isUpdated: any = await updateContentRepo(data);
@@ -70,8 +77,10 @@ export default function AdminDashboardClient({ initialData }: { initialData: Sit
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/admin");
+    router.push("/");
   };
+
+  if (saving) return <ProcessingBtn />
 
   return (
     <div className="min-h-screen bg-obsidian-900 flex ">
@@ -209,6 +218,7 @@ export default function AdminDashboardClient({ initialData }: { initialData: Sit
               onChange={(h) => setData({ ...data, hero: h })}
               uploadImage={uploadImage}
               uploading={uploading}
+              wholeData={data}
             />
           )}
 
@@ -281,105 +291,129 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 const inputCls = `w-full bg-obsidian-800/50 border border-champagne-800/30
  rounded-xl px-4 py-3 font-body text-sm text-champagne-100 placeholder-champagne-400/30 focus:outline-none focus:border-champagne-600/60 transition-colors`;
 
-function ImageUploader({ current, onUpload, uploading }: { current: string; onUpload: (url: string) => void; uploading: boolean }) {
-  const fileRef = useRef<HTMLInputElement>(null);
-  return (
-    <div className="space-y-3">
-      <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-champagne-800/30">
-        <Image src={current} alt="Current" fill className="object-cover" />
-      </div>
-      <input ref={fileRef} type="file" accept="image/*" className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = async () => {
-            // In production this calls the upload API
-            onUpload(URL.createObjectURL(file));
-          };
-          reader.readAsDataURL(file);
-        }}
-      />
-      <button
-        onClick={() => fileRef.current?.click()}
-        disabled={uploading}
-        className="btn-outline-gold w-full px-4 py-3 rounded-xl font-body text-sm flex items-center justify-center gap-2 disabled:opacity-60"
-      >
-        <Upload size={15} />
-        {uploading ? "Uploading..." : "Change Image"}
-      </button>
-      <div>
-        <label className="font-body text-xs text-champagne-400/60 tracking-wider uppercase mb-2 block">Or paste URL</label>
-        <input
-          type="url"
-          value={current}
-          onChange={(e) => onUpload(e.target.value)}
-          className={inputCls}
-          placeholder="https://..."
-        />
-      </div>
-    </div>
-  );
+
+
+async function deleteImageFromCloudinary({ collectionName, ImgArrName, imgItem }: {
+  collectionName: string;
+  imgItem: { url: string, publicId: string };
+  ImgArrName: string;
+}) {
+
+  try {
+
+    const res = await fetch("/api/delete-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ imgItem, collectionName, ImgArrName, }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      toast.success("SUCCESSFULLY Deleted!");
+      // console.log("LOGIN SUCCESS");
+      return true;
+
+    } else {
+      toast.error(data.message || "Invalid credentials!!");
+      return false;
+    }
+  } catch (err) {
+    throw new Error()
+  }
 }
 
-/* ── Section Editors ── */
-// function HeroEditor({ data, onChange, uploadImage, uploading }: { data: HeroData; onChange: (d: HeroData) => void; uploadImage: (f: File, cb: (url: string) => void) => void; uploading: boolean }) {
-//   return (
-//     <div className="space-y-6">
-//       <div className="glass-card rounded-2xl p-6 space-y-5">
-//         <h3 className="font-display text-lg text-champagne-200">Hero Image</h3>
-//         {/* <ImageUploader current={data.heroImage} uploading={uploading} onUpload={(url) => onChange({ ...data, heroImage: url })} /> */}
-//       </div>
-//       <div className="glass-card rounded-2xl p-6 space-y-5">
-//         <h3 className="font-display text-lg text-champagne-200">Text Content</h3>
-//         <Field label="Badge text"><input type="text" value={data.badge} onChange={(e) => onChange({ ...data, badge: e.target.value })} className={inputCls} /></Field>
-//         <div className="grid grid-cols-2 gap-4">
-//           <Field label="Main Headline"><input type="text" value={data.headline} onChange={(e) => onChange({ ...data, headline: e.target.value })} className={inputCls} /></Field>
-//           <Field label="Accent Headline"><input type="text" value={data.headlineAccent} onChange={(e) => onChange({ ...data, headlineAccent: e.target.value })} className={inputCls} /></Field>
-//         </div>
-//         <Field label="Subheadline"><textarea rows={3} value={data.subheadline} onChange={(e) => onChange({ ...data, subheadline: e.target.value })} className={inputCls} /></Field>
-//         <div className="grid grid-cols-2 gap-4">
-//           <Field label="Primary CTA"><input type="text" value={data.ctaPrimary} onChange={(e) => onChange({ ...data, ctaPrimary: e.target.value })} className={inputCls} /></Field>
-//           <Field label="Secondary CTA"><input type="text" value={data.ctaSecondary} onChange={(e) => onChange({ ...data, ctaSecondary: e.target.value })} className={inputCls} /></Field>
-//         </div>
-//       </div>
-//       <div className="glass-card rounded-2xl p-6 space-y-4">
-//         <h3 className="font-display text-lg text-champagne-200">Stats</h3>
-//         <div className="grid grid-cols-2 gap-4">
-//           {data.stats.map((stat, i) => (
-//             <div key={i} className="grid grid-cols-2 gap-3">
-//               <Field label={`Stat ${i + 1} Value`}><input type="text" value={stat.value} onChange={(e) => { const s = [...data.stats]; s[i] = { ...s[i], value: e.target.value }; onChange({ ...data, stats: s }); }} className={inputCls} /></Field>
-//               <Field label="Label"><input type="text" value={stat.label} onChange={(e) => { const s = [...data.stats]; s[i] = { ...s[i], label: e.target.value }; onChange({ ...data, stats: s }); }} className={inputCls} /></Field>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
-function HeroEditor({ data, onChange, uploadImage, uploading }: { data: HeroData; onChange: (d: HeroData) => void; uploadImage: (f: File, cb: (url: string) => void) => void; uploading: boolean }) {
+function HeroEditor({ data, onChange, uploadImage, uploading, wholeData }: { wholeData: SiteData; data: HeroData; onChange: (d: HeroData) => void; uploadImage: (f: File, cb: (url: string) => void) => void; uploading: boolean }) {
+  //  console.log("HeroData",{data})
+  const [loading, setLoading] = useState(false);
 
-  
- const fileRef = useRef<HTMLInputElement>(null);
+  const DeleteHeroImage = async ({ item, i }: { item: { url: string, publicId: string }, i: number }) => {
+    try {
+
+      if (data?.heroImage.length <= 1) {
+        return alert("Can not delete this last Image! Atleat one image should present!")
+      }
+
+      setLoading(true)
+      const confirmDelete = window.confirm(
+        "Do you really want to delete this image?"
+      );
+
+      if (!confirmDelete) { return setLoading(false); }
+      // first delete from cloudanary . then remove from database 
+      await deleteImageFromCloudinary({ collectionName: "hero", ImgArrName: "heroImage", imgItem: item })
+
+      onChange({ ...data, heroImage: data?.heroImage.filter((_, j) => j !== i) });
+      // console.log({data});
+
+
+    } catch (err) {
+      throw new Error();
+    }
+    finally {
+      setLoading(false)
+    }
+
+
+
+  }
+
+  const handleImageUpload = async (files: FileList) => {
+    setLoading(true)
+    try {
+      const formData = new FormData();
+
+      Array.from(files).forEach((file) => {
+        formData.append("files", file);
+      });
+      // extra data
+      formData.append("collectionName", "hero");
+      formData.append("ImgArrName", "heroImage");
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error("Upload failed");
+      }
+      const DATA_ = await res.json()
+      console.log({ DATA_ })
+
+      if (DATA_?.images?.length > 0) onChange({ ...data, heroImage: [...data?.heroImage, ...DATA_?.images] });
+
+      toast.success("Successfully updated Images!");
+
+    } catch (error) {
+
+      console.error(error);
+
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  if (loading) return <Loader />
   return (
-    <section className="relative min-h-screen flex items-center 
-      bg-obsidian-950 text-white!">
+    <section className="relative min-h-screen flex items-center bg-obsidian-950 text-white!">
 
 
 
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-20 grid lg:grid-cols-2 gap-16 items-center ">
 
-
-<div className="flex items-center justify-between">
-          <h3 className="font-display text-lg text-champagne-200">HERO Images ({data.heroImage.length})</h3>
+        {/* Right - Hero image */}
+        <div className="flex items-center justify-between">
+          <h3 className="font-display text-lg text-champagne-200">HERO Images ({data?.heroImage?.length})</h3>
           <input ref={fileRef} type="file" accept="image/*" multiple className="hidden"
             onChange={(e) => {
-              Array.from(e.target.files || []).forEach((file) => {
-                const newItem = { title: file.name.replace(/\.[^.]+$/, ""), image: URL.createObjectURL(file) };
-                onChange({ ...data, heroImage: [...data.heroImage, newItem] });
-              });
+              const files = e.target.files;
+              if (!files) return;
+              handleImageUpload(files);
             }}
           />
           <button onClick={() => fileRef.current?.click()} className="btn-gold px-4 py-2 rounded-lg font-body text-xs flex items-center gap-2">
@@ -387,19 +421,20 @@ function HeroEditor({ data, onChange, uploadImage, uploading }: { data: HeroData
           </button>
         </div>
 
-  <div className="grid grid-cols-3 gap-4">
-          {data.heroImage.map((item, i) => (
-            <div key={item+i} className="space-y-2">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {data?.heroImage?.map((item, i) => (
+            <div key={item.url} className="space-y-2">
               <div className="relative aspect-square rounded-xl overflow-hidden">
-                <Image src={item}  fill className="object-cover" />
-                <button
-                  onClick={() => onChange({ ...data, heroImage: data.heroImage.filter((_, j) => j !== i) })}
-                  className="absolute top-2 right-2 w-6 h-6 bg-red-500/80 rounded-full flex items-center justify-center hover:bg-red-500"
+                <img src={item.url} className="object-cover" />
+                {!loading && <button
+                  onClick={() => DeleteHeroImage({ item, i })}
+                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full 
+                  flex items-center justify-center hover:bg-red-900"
                 >
                   <X size={12} className="text-white" />
-                </button>
+                </button>}
               </div>
-              
+
             </div>
           ))}
         </div>
@@ -426,8 +461,8 @@ function HeroEditor({ data, onChange, uploadImage, uploading }: { data: HeroData
             <span className="font-body text-xs text-champagne-300 tracking-[0.2em] uppercase">
 
               <input type="text"
-                value={data.badge} onChange={(e) => onChange({ ...data, badge: e.target.value })} className={inputCls} />
-              {data.badge}
+                value={data?.badge} onChange={(e) => onChange({ ...data, badge: e.target.value })} className={inputCls} />
+              {data?.badge}
             </span>
             <Star size={12} className="text-champagne-400 fill-champagne-400" />
           </div>
@@ -499,57 +534,8 @@ function HeroEditor({ data, onChange, uploadImage, uploading }: { data: HeroData
           </div>
         </div>
 
-        {/* Right - Hero image */}
-        {false &&<>
-          <div
-            className=" relative order-1 lg:order-2"
-            style={{ transitionDelay: "0.3s" }}
-          >
-            {/* Frame decoration */}
-            <div className="absolute -inset-4 rounded-3xl border border-champagne-700/20" />
-            <div className="absolute -inset-8 rounded-3xl border border-champagne-800/10" />
-
-            {/* Floating accent */}
-            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-champagne-600/20 blur-xl" />
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-champagne-700/15 blur-xl" />
-
-            <div className="relative rounded-2xl overflow-hidden aspect-[3/4] shadow-2xl shadow-champagne-900/40">
 
 
-
-
-              {/* Images */}
-              {data.heroImage.map((img, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-opacity duration-1000 `}
-                >
-                  <Image
-                    src={img}
-                    alt="Roma Rawat- Makeup Artist"
-                    fill
-
-
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-
-
-
-
-
-
-
-
-            </div>
-
-
-
-
-
-          </div></>}
       </div>
 
 
@@ -563,25 +549,159 @@ function HeroEditor({ data, onChange, uploadImage, uploading }: { data: HeroData
 
 
 function AboutEditor({ data, onChange, uploadImage, uploading }: { data: AboutData; onChange: (d: AboutData) => void; uploadImage: (f: File, cb: (url: string) => void) => void; uploading: boolean }) {
+
+
+
+  const [loading, setLoading] = useState(false);
+
+  const DeleteImage = async ({ item, i }: { item: { url: string, publicId: string }, i: number }) => {
+    try {
+
+      if (data?.aboutImages.length <= 1) {
+        return alert("Can not delete this last Image! Atleat one image should present!");
+      }
+      setLoading(true)
+      const confirmDelete = window.confirm(
+        "Do you really want to delete this image?"
+      );
+
+      if (!confirmDelete) { return setLoading(false); }
+      // first delete from cloudanary . then remove from database 
+      await deleteImageFromCloudinary({ collectionName: "about", ImgArrName: "aboutImages", imgItem: item })
+
+      onChange({ ...data, aboutImages: data?.aboutImages.filter((_, j) => j !== i) });
+      // console.log({data});
+
+
+    } catch (err) {
+      throw new Error();
+    }
+    finally {
+      setLoading(false)
+    }
+
+
+
+  }
+
+
+
+  const handleImageUpload = async (files: FileList) => {
+    setLoading(true)
+    try {
+      const formData = new FormData();
+
+      Array.from(files).forEach((file) => {
+        formData.append("files", file);
+      });
+      // extra data
+      formData.append("collectionName", "about");
+      formData.append("ImgArrName", "aboutImages");
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error("Upload failed");
+      }
+      const DATA_ = await res.json()
+      console.log({ DATA_ })
+
+      if (DATA_?.images?.length > 0) onChange({ ...data, aboutImages: [...data?.aboutImages, ...DATA_?.images] });
+
+      toast.success("Successfully updated Images!");
+
+    } catch (error) {
+
+      console.error(error);
+      
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  if (loading) return <Loader />
+
   return (
     <div className="space-y-6">
       <div className="glass-card rounded-2xl p-6 space-y-5">
         <h3 className="font-display text-lg text-champagne-200">Profile Image</h3>
         {/* <ImageUploader current={data.image} uploading={uploading} onUpload={(url) => onChange({ ...data, image: url })} /> */}
+
+
+        <input ref={fileRef} type="file" accept="image/*" multiple className="hidden"
+          onChange={(e) => {
+            const files = e.target.files;
+            if (!files) return;
+            handleImageUpload(files);
+          }}
+        />
+        <button onClick={() => fileRef.current?.click()} className="btn-gold px-4 py-2 rounded-lg font-body text-xs flex items-center gap-2">
+          <Upload size={13} /> Add Image
+        </button>
+
+
+
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {data?.aboutImages?.map((item, i) => (
+            <div key={item.url + i} className="space-y-2">
+              <div className="relative aspect-square rounded-xl overflow-hidden">
+                <img src={item.url} className="object-cover" />
+                {!loading && <button
+                  onClick={() => DeleteImage({ item, i })}
+                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full 
+                  flex items-center justify-center hover:bg-red-900"
+                >
+                  <X size={12} className="text-white" />
+                </button>}
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
       <div className="glass-card rounded-2xl p-6 space-y-5">
         <h3 className="font-display text-lg text-champagne-200">Text Content</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
           <Field label="Badge"><input type="text" value={data.badge} onChange={(e) => onChange({ ...data, badge: e.target.value })} className={inputCls} /></Field>
           <Field label="Headline"><input type="text" value={data.headline} onChange={(e) => onChange({ ...data, headline: e.target.value })} className={inputCls} /></Field>
         </div>
+
+        <Field label="Years of experience"><input type="number" value={data.experienceYear} onChange={(e) => onChange({ ...data, experienceYear: e.target.value })} className={inputCls} /></Field>
+
         <Field label="Bio Paragraph 1"><textarea rows={3} value={data.bio} onChange={(e) => onChange({ ...data, bio: e.target.value })} className={inputCls} /></Field>
         <Field label="Bio Paragraph 2"><textarea rows={3} value={data.bio2} onChange={(e) => onChange({ ...data, bio2: e.target.value })} className={inputCls} /></Field>
         <Field label="Signature"><input type="text" value={data.signature} onChange={(e) => onChange({ ...data, signature: e.target.value })} className={inputCls} /></Field>
       </div>
       <div className="glass-card rounded-2xl p-6 space-y-4">
         <h3 className="font-display text-lg text-champagne-200">Skills</h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-3">
           {data.skills.map((skill, i) => (
             <div key={i} className="flex gap-2">
               <input type="text" value={skill} onChange={(e) => { const s = [...data.skills]; s[i] = e.target.value; onChange({ ...data, skills: s }); }} className={inputCls} />
@@ -640,7 +760,78 @@ function ServicesEditor({ data, onChange }: { data: ServicesData; onChange: (d: 
 }
 
 function PortfolioEditor({ data, onChange, uploadImage, uploading }: { data: PortfolioData; onChange: (d: PortfolioData) => void; uploadImage: (f: File, cb: (url: string) => void) => void; uploading: boolean }) {
+  const [loading, setLoading] = useState(false);
+  console.log(JSON.stringify(data))
+  
+  
+  const handleImageUpload = async (files: FileList) => {
+    setLoading(true)
+    try {
+      const formData = new FormData();
+
+      Array.from(files).forEach((file) => {
+        formData.append("files", file);
+      });
+      // extra data
+      formData.append("collectionName", "portfolio");
+      formData.append("ImgArrName", "items");
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error("Upload failed");
+      };
+      const DATA_ = await res.json();
+      // console.log({ DATA_ })
+
+      if (DATA_?.images?.length > 0) onChange({ ...data, items: [...data?.items, ...DATA_?.images] });
+
+      toast.success("Successfully updated Images!");
+
+    } catch (error) {
+
+      console.error(error);
+     
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const DeleteImage = async ({ item, i }: { item: { url: string, publicId: string }, i: number }) => {
+    try {
+
+      if (data?.items.length <= 1) {
+        return alert("Can not delete this last Image! Atleat one image should present!");
+      };
+      setLoading(true);
+      const confirmDelete = window.confirm("Do you really want to delete this image?");
+
+      if (!confirmDelete) { return setLoading(false); }
+      // first delete from cloudanary . then remove from database 
+      await deleteImageFromCloudinary({ collectionName: "portfolio", ImgArrName: "items", imgItem: item });
+
+      onChange({ ...data, items: data?.items.filter((_, j) => j !== i) });
+      // console.log({data});
+
+
+    } catch (err) {
+      throw new Error();
+    }
+    finally {
+      setLoading(false)
+    }
+
+
+
+  };
+
   const fileRef = useRef<HTMLInputElement>(null);
+
+  if (loading) return <Loader />
   return (
     <div className="space-y-6">
       <div className="glass-card rounded-2xl p-6 space-y-4">
@@ -654,29 +845,31 @@ function PortfolioEditor({ data, onChange, uploadImage, uploading }: { data: Por
       <div className="glass-card rounded-2xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg text-champagne-200">Portfolio Images ({data.items.length})</h3>
+
+
           <input ref={fileRef} type="file" accept="image/*" multiple className="hidden"
             onChange={(e) => {
-              Array.from(e.target.files || []).forEach((file) => {
-                const newItem = { id: Date.now().toString(), category: "Bridal", title: file.name.replace(/\.[^.]+$/, ""), image: URL.createObjectURL(file) };
-                onChange({ ...data, items: [...data.items, newItem] });
-              });
+              const files = e.target.files;
+              if (!files) return;
+              handleImageUpload(files);
             }}
           />
           <button onClick={() => fileRef.current?.click()} className="btn-gold px-4 py-2 rounded-lg font-body text-xs flex items-center gap-2">
             <Upload size={13} /> Add Images
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2  gap-4">
           {data.items.map((item, i) => (
             <div key={item.id} className="space-y-2">
               <div className="relative aspect-square rounded-xl overflow-hidden">
-                <Image src={item.image} alt={item.title} fill className="object-cover" />
-                <button
-                  onClick={() => onChange({ ...data, items: data.items.filter((_, j) => j !== i) })}
-                  className="absolute top-2 right-2 w-6 h-6 bg-red-500/80 rounded-full flex items-center justify-center hover:bg-red-500"
+                <Image src={item.image.url} alt={item.title} fill className="object-cover" />
+                {!loading && <button
+                  onClick={() => DeleteImage({ item: item.image, i })}
+                  className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full 
+                  flex items-center justify-center hover:bg-red-900"
                 >
                   <X size={12} className="text-white" />
-                </button>
+                </button>}
               </div>
               <input type="text" value={item.title} onChange={(e) => { const it = [...data.items]; it[i] = { ...it[i], title: e.target.value }; onChange({ ...data, items: it }); }} className={`${inputCls} text-xs py-2`} placeholder="Title" />
               <select value={item.category} onChange={(e) => { const it = [...data.items]; it[i] = { ...it[i], category: e.target.value }; onChange({ ...data, items: it }); }} className={`${inputCls} text-xs py-2`}>

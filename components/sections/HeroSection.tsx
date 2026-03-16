@@ -152,12 +152,12 @@ export default function HeroSection({ data }: { data: HeroData }) {
               {/* Images */}
               {data.heroImage.map((img, index) => (
                 <div
-                  key={index}
+                  key={img.url+index}
                   className={`absolute inset-0 transition-opacity duration-1000 ${index === current ? "opacity-100 z-10" : "opacity-0"
                     }`}
                 >
                   <Image
-                    src={img}
+                    src={img.url}
                     alt="Roma Rawat- Makeup Artist"
                     fill
                     priority={index === 0}

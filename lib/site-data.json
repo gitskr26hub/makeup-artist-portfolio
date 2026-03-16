@@ -9,10 +9,22 @@
     "ctaPrimary": "Book a Session",
     "ctaSecondary": "View Portfolio",
     "heroImage": [
-      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772814706/WhatsApp_Image_2026-02-28_at_10.52.53_2_ujcrnn.webp",
-      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804740/WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo.webp",
-      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772819048/WhatsApp_Image_gtxakd.webp",
-      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944631/White_Black_Minimal_Elegant_Makeup_Artist_Logo_f4pm4s.webp"
+      {
+        "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772814706/WhatsApp_Image_2026-02-28_at_10.52.53_2_ujcrnn.webp",
+        "publicId": "WhatsApp_Image_2026-02-28_at_10.52.53_2_ujcrnn"
+      },
+      {
+        "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804740/WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo.webp",
+        "publicId": "WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo"
+      },
+      {
+        "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772819048/WhatsApp_Image_gtxakd.webp",
+        "publicId": "WhatsApp_Image_gtxakd"
+      },
+      {
+        "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944631/White_Black_Minimal_Elegant_Makeup_Artist_Logo_f4pm4s.webp",
+        "publicId": "White_Black_Minimal_Elegant_Makeup_Artist_Logo_f4pm4s"
+      }
     ],
     "stats": [
       {
@@ -36,8 +48,14 @@
     "bio": "Hi, I'm Roma — a Lucknow, India-based makeup artist with over 2+ years of experience transforming faces for weddings, editorial shoots, film, and runway. My philosophy is simple: every face tells a story, and I'm here to help tell yours.",
     "bio2": "Trained at the prestigious Makeup Designory in VLCC Institute Lucknow, I've worked with top fashion magazines, brides, and film productions across India.",
     "aboutImages": [
-      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944520/WhatsApp_Image_2026-03-05_at_15.38.36_multmn.webp",
-      "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944994/WhatsApp_Image_2026-03-08_at_09.54.14_emouox.webp"
+      {
+        "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944520/WhatsApp_Image_2026-03-05_at_15.38.36_multmn.webp",
+        "publicId": "WhatsApp_Image_2026-03-05_at_15.38.36_multmn"
+      },
+      {
+        "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772944994/WhatsApp_Image_2026-03-08_at_09.54.14_emouox.webp",
+        "publicId": "WhatsApp_Image_2026-03-08_at_09.54.14_emouox"
+      }
     ],
     "skills": [
       "Bridal Makeup",
@@ -129,61 +147,91 @@
         "id": "1",
         "category": "Bridal",
         "title": "Timeless Elegance",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804740/WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804740/WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo.webp",
+          "publicId": "WhatsApp_Image_2026-02-28_at_10.52.53_m7scjo"
+        }
       },
       {
         "id": "2",
         "category": "Editorial",
         "title": "Shoot 2026",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_1_hwxqbo.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_1_hwxqbo.webp",
+          "publicId": "WhatsApp_Image_2026-02-28_at_10.52.52_1_hwxqbo"
+        }
       },
       {
         "id": "3",
         "category": "Fashion",
         "title": "IN Collection",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.54_1_cixc9l.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.54_1_cixc9l.webp",
+          "publicId": "WhatsApp_Image_2026-02-28_at_10.52.54_1_cixc9l"
+        }
       },
       {
         "id": "4",
         "category": "Bridal",
         "title": "Garden Romance",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_qerljf.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.52_qerljf.webp",
+          "publicId": "WhatsApp_Image_2026-02-28_at_10.52.52_qerljf"
+        }
       },
       {
         "id": "5",
         "category": "Editorial",
         "title": "Bold & Beautiful",
-        "image": "https://images.unsplash.com/photo-1500840216050-6ffa99d75160?w=600&q=80"
+        "image": {
+          "url": "https://images.unsplash.com/photo-1500840216050-6ffa99d75160?w=600&q=80",
+          "publicId": "unsplash-image"
+        }
       },
       {
         "id": "6",
         "category": "Film",
         "title": "Drama",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.54_wejvxl.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.54_wejvxl.webp",
+          "publicId": "WhatsApp_Image_2026-02-28_at_10.52.54_wejvxl"
+        }
       },
       {
         "id": "7",
         "category": "Fashion",
         "title": "Summer Campaign",
-        "image": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80"
+        "image": {
+          "url": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80",
+          "publicId": "unsplash-image"
+        }
       },
       {
         "id": "8",
         "category": "Bridal",
         "title": "Modern Romance",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.53_1_tk5owo.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772804739/WhatsApp_Image_2026-02-28_at_10.52.53_1_tk5owo.webp",
+          "publicId": "WhatsApp_Image_2026-02-28_at_10.52.53_1_tk5owo"
+        }
       },
       {
         "id": "9",
         "category": "Treditional",
         "title": "School Function",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772820071/WhatsApp_Image_2026-02-01_at_15.32.40_muju2a.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772820071/WhatsApp_Image_2026-02-01_at_15.32.40_muju2a.webp",
+          "publicId": "WhatsApp_Image_2026-02-01_at_15.32.40_muju2a"
+        }
       },
       {
         "id": "10",
         "category": "Treditional",
         "title": "School Function",
-        "image": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772820280/WhatsApp_Image_2026-02-01_at_15.32.40_1_tjlyv2.webp"
+        "image": {
+          "url": "https://res.cloudinary.com/dss0abc9o/image/upload/v1772820280/WhatsApp_Image_2026-02-01_at_15.32.40_1_tjlyv2.webp",
+          "publicId": "WhatsApp_Image_2026-02-01_at_15.32.40_1_tjlyv2"
+        }
       }
     ]
   },
