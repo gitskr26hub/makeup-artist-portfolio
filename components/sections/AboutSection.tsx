@@ -1,105 +1,184 @@
 "use client";
 
 import Image from "next/image";
-import { CheckCircle } from "lucide-react";
-import type { AboutData } from "@/lib/content";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowRight,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import type { AboutData } from "@/lib/content";
 
 export default function AboutSection({ data }: { data: AboutData }) {
-
-
+  const images = data.aboutImages ?? [];
+  const total = images.length;
   const [current, setCurrent] = useState(0);
 
+  // 🔥 Optimized slider
   useEffect(() => {
+    if (total <= 1) return;
+
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % data.aboutImages.length);
-    }, 3000); // change image every 3 seconds
+      setCurrent((prev) => (prev + 1) % total);
+    }, 3500);
 
     return () => clearInterval(interval);
-  }, [data.aboutImages.length]);
+  }, [total]);
 
+  // 🔥 Animation variants (reusable)
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0 },
+  };
 
-
+  const stagger = {
+    show: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
 
   return (
-    <section id="about" className="py-32 bg-obsidian-950 relative overflow-hidden">
-      {/* Background accent */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 rounded-full bg-champagne-900/10 blur-[100px] -translate-y-1/2 -translate-x-1/2" />
+    <section className="relative overflow-hidden py-28 lg:py-36 bg-obsidian-950">
+      
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-32 left-1/2 w-[36rem] h-[36rem] -translate-x-1/2 rounded-full bg-champagne-900/10 blur-[120px]" />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
-          {/* Left - Image */}
-          <div className="relative max-w-[600px]">
 
-            {/* Decorative Frame */}
-            <div className="absolute top-8 -left-8 w-full h-full rounded-2xl border border-champagne-700/20 pointer-events-none" />
+          {/* 🔥 LEFT IMAGE */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="relative"
+          >
+            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl">
+              
+              <div className="relative aspect-[4/5]">
 
-            {/* Slider */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-champagne-900/30 img-zoom">
+                {/* 🔥 AnimatePresence for smooth image transition */}
+                <AnimatePresence mode="wait">
+                  {images.length > 0 && (
+                    <motion.div
+                      key={current}
+                      initial={{ opacity: 0, scale: 1.05 }}
+                      animate={{ opacity: 1, scale: 1.1 }}
+                      exit={{ opacity: 0, scale: 1 }}
+                      transition={{ duration: 1.5 }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src={images[current].url}
+                        alt="About"
+                        fill
+                        priority
+                        sizes="(min-width: 1024px) 600px, 100vw"
+                        className="object-cover will-change-transform"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-              {data?.aboutImages?.map((img, index) => (
-                <div
-                  key={index+img?.url}
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/70 to-transparent" />
 
+                {/* Controls */}
+                {total > 1 && (
+                  <>
+                    <button
+                      onClick={() =>
+                        setCurrent((prev) => (prev - 1 + total) % total)
+                      }
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 backdrop-blur p-2 rounded-full"
+                    >
+                      <ChevronLeft size={18} />
+                    </button>
 
-                  className={`transition-opacity duration-1000 ${index === current ? "opacity-100" : "opacity-0 absolute inset-0"
-                    }`}
-                >
-                  <Image
-                    src={img?.url}
-                    alt="About"
-                    width={600}
-                    height={750}
-                    className="object-cover w-full transition-all duration-700 hover:scale-110 hover:brightness-110"
-                    // className="w-full h-auto object-contain"
-                    priority={index === 0}
-                  />
-                </div>
-              ))}
-
+                    <button
+                      onClick={() =>
+                        setCurrent((prev) => (prev + 1) % total)
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 backdrop-blur p-2 rounded-full"
+                    >
+                      <ChevronRight size={18} />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
-            {/* Floating Badge */}
-            <div className="absolute -bottom-6 -right-6 glass-card rounded-2xl p-6 border border-champagne-700/30">
-              <div className="font-display text-5xl text-champagne-400 font-semibold leading-none">
+            {/* Floating Years Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="absolute -bottom-6 -right-6 glass-card rounded-2xl p-6 border border-champagne-700/30"
+            >
+               <div className="font-display text-5xl text-champagne-400 font-semibold leading-none">
                 {data.experienceYear}+ 
               </div>
               <div className="font-body text-xs text-champagne-300/70 tracking-wider uppercase mt-2">
-                Years of<br />Artistry
+                Years of<br />Experience
               </div>
-            </div>
+            </motion.div>
+          </motion.div>
 
-          </div>
-
-          {/* Right - Content */}
-          <div className="space-y-8">
+          {/* 🔥 RIGHT CONTENT */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="space-y-10"
+          >
             {/* Badge */}
-            <div className="inline-flex items-center gap-3">
+            <motion.div variants={fadeUp} className="flex items-center gap-3">
               <div className="h-px w-12 bg-champagne-600" />
-              <span className="font-body text-xs text-champagne-400 tracking-[0.25em] uppercase">{data.badge}</span>
-            </div>
+              <span className="text-xs tracking-[0.3em] uppercase text-champagne-400">
+                {data.badge}
+              </span>
+            </motion.div>
 
-            <h2 className="font-display text-5xl lg:text-6xl text-champagne-50 font-light leading-tight">
+            {/* Heading */}
+            <motion.h2
+              variants={fadeUp}
+              className="text-5xl lg:text-6xl font-display text-champagne-50"
+            >
               {data.headline}
-            </h2>
+            </motion.h2>
 
-            <div className="space-y-4">
-              <p className="font-body text-champagne-200/65 leading-relaxed">{data.bio}</p>
-              <p className="font-body text-champagne-200/65 leading-relaxed">{data.bio2}</p>
-            </div>
+            {/* Text */}
+            <motion.div variants={fadeUp} className="space-y-4">
+              <p className="text-champagne-200/70">{data.bio}</p>
+              <p className="text-champagne-200/60">{data.bio2}</p>
+            </motion.div>
 
             {/* Skills */}
-            <div className="grid grid-cols-2 gap-3">
+            <motion.div variants={fadeUp} className="grid grid-cols-2 gap-3">
               {data.skills.map((skill, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <CheckCircle size={14} className="text-champagne-500 flex-shrink-0" />
-                  <span className="font-body text-sm text-champagne-200/80">{skill}</span>
+                  <CheckCircle size={16} className="text-champagne-500" />
+                  <span className="text-sm">{skill}</span>
                 </div>
               ))}
-            </div>
+            </motion.div>
 
-            {/* Gold divider */}
-            <div className="gold-divider my-6" />
+
+ {/* Gold divider */}
+ <div className="gold-divider my-6" />
+            {/* CTA */}
+            <motion.div variants={fadeUp} >
+
+           
+
 
             {/* Signature */}
             <div>
@@ -107,10 +186,20 @@ export default function AboutSection({ data }: { data: AboutData }) {
               <p className="font-body text-xs text-champagne-300/50 tracking-wider uppercase mt-1">{data.profession}</p>
             </div>
 
-            <a href="#contact" className="btn-gold inline-block px-8 py-4 rounded-full font-body text-sm tracking-widest uppercase">
+            <div className="flex mt-3  gap-6 sm:block">
+              <a href="#contact" className="btn-gold inline-block px-8 py-4 rounded-full font-body text-sm tracking-widest uppercase">
               Work with Me
             </a>
-          </div>
+                      
+              {/* <a
+                href="#portfolio"
+                className="btn-outline-gold px-8 py-4 rounded-full"
+              >
+                View Work
+              </a>  */}
+            </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

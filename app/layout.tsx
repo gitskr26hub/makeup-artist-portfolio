@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { getSiteData } from "@/lib/content";
 import { Toaster } from "react-hot-toast";
+import { Providers } from "@/providers";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -37,19 +38,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="grain">
-        {children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              background: "#141414",
-              color: "#f9f1e1",
-              border: "1px solid rgba(200,146,44,0.3)",
-            },
-          }}
-        />
-      </body>
+      {/* <Providers> */}
+
+        <body className="grain">
+          {children}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: "#141414",
+                color: "#f9f1e1",
+                border: "1px solid rgba(200,146,44,0.3)",
+              },
+            }}
+          />
+        </body>
+      {/* </Providers> */}
+
     </html>
   );
 }
+
+
