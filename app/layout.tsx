@@ -38,9 +38,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      {/* <Providers> */}
 
-        <body className="grain">
+
+      <body className="grain">
+        <Providers>
           {children}
           <Toaster
             position="top-right"
@@ -52,8 +53,8 @@ export default function RootLayout({
               },
             }}
           />
-        </body>
-      {/* </Providers> */}
+        </Providers>
+      </body>
 
     </html>
   );

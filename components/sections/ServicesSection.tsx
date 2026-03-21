@@ -33,7 +33,7 @@ const fadeUp = {
 const cardHover = {
   hover: {
     y: -10,
-    scale: 1.02,
+    scale: 1.03,
     transition: { duration: 0.3 },
   },
 };
@@ -105,7 +105,7 @@ export default function ServicesSection({ data }: { data: ServicesData }) {
                 {/* Icon */}
                 <div className="w-12 h-12 rounded-xl bg-champagne-900/50 flex items-center justify-center mb-6 group-hover:bg-champagne-800/50 transition-colors">
                   {iconMap[service.icon] || (
-                    <Sparkles size={24} className="text-champagne-400" />
+                    <Sparkles size={24} className="text-champagne-800" />
                   )}
                 </div>
 
@@ -139,7 +139,7 @@ export default function ServicesSection({ data }: { data: ServicesData }) {
 
                 {/* Price */}
                 <div className="pt-4 border-t border-champagne-800/20">
-                  <span className="font-display text-lg text-champagne-400">
+                  <span className="font-display text-2xl">
                     {service.price}
                   </span>
                 </div>
@@ -156,7 +156,7 @@ export default function ServicesSection({ data }: { data: ServicesData }) {
           viewport={{ once: true }}
           className="mt-20 rounded-2xl border border-champagne-700/20 bg-champagne-900/10 p-10 text-center"
         >
-          <h3 className="font-display text-3xl text-champagne-100 mb-3 font-light">
+          <h3 className="font-display text-3xl   mb-3 font-light">
             Not sure which service is right for you?
           </h3>
 
