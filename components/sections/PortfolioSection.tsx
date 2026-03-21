@@ -116,7 +116,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
               <div className="relative w-full aspect-[3/4]">
 
                 <Image
-                  src={item?.image?.url}
+                  src={item?.image?.url?.trim()}
                   alt={item.title}  
                   fill
                   sizes="(max-width:768px) 50vw, (max-width:1200px) 33vw, 25vw"
@@ -186,7 +186,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
               {filtered.map((item, index) => (
                 <div key={item?.image?.url + index} className="min-w-full flex justify-center">
                   <Image
-                    src={item.image.url}
+                    src={item?.image?.url?.trim()}
                     alt="Portfolio"
                     width={1400}
                     height={900}
