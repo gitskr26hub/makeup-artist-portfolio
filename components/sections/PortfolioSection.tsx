@@ -1,8 +1,52 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { PortfolioData } from "@/lib/content";
+
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariant = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    scale: 0.95,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1], // premium easing
+    },
+  },
+};
+
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+
+
+
+
+
 
 export default function PortfolioSection({ data }: { data: PortfolioData }) {
   const [active, setActive] = useState("All");
@@ -64,23 +108,27 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}
-        <div className="text-center mb-14 space-y-5">
-          <div className="inline-flex items-center gap-3">
-            <div className="h-px w-12 bg-champagne-600" />
+        <motion.div  initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          variants={container}
+         className="text-center mb-14 space-y-5">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-3">
+            < div  className="h-px w-12 bg-champagne-600" />
             <span className="font-body text-xs text-champagne-400 tracking-[0.25em] uppercase">
               {data.badge}
             </span>
             <div className="h-px w-12 bg-champagne-600" />
-          </div>
+          </motion.div>
 
-          <h2 className="font-display text-5xl lg:text-6xl text-champagne-50 font-light leading-tight">
+          <motion.h2  variants={fadeUp} className="font-display text-5xl lg:text-6xl text-champagne-50 font-light leading-tight">
             {data.headline}
-          </h2>
+          </motion.h2>
 
-          <p className="font-body text-champagne-200/60 max-w-xl mx-auto leading-relaxed">
+          <motion.p  variants={fadeUp} className="font-body text-champagne-200/60 max-w-xl mx-auto leading-relaxed">
             {data.subheadline}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
@@ -99,51 +147,74 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
         </div>
 
         {/* Responsive Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+        >
           {filtered.map((item, index) => {
-            // console.log("filtered==>",{item})
-            return (<div
-              key={item.id}
-              className="relative group cursor-pointer rounded-xl overflow-hidden img-zoom"
-              onClick={() => {
-                setLightbox(item.image.url);
-                setCurrent(index)
-              }}
-            >
+            return (
+              <motion.div
+                key={item.id}
+                variants={itemVariant}
+                whileHover={{
+                  scale: 1.04,
+                  y: -6,
+                }}
+                transition={{ type: "spring", stiffness: 200, damping: 18 }}
+                className="relative group cursor-pointer rounded-xl overflow-hidden will-change-transform"
+                onClick={() => {
+                  setLightbox(item.image.url);
+                  setCurrent(index);
+                }}
+              >
+                {/* Image Container */}
+                <div className="relative w-full aspect-[3/4] overflow-hidden">
+                  <motion.div
+                    className="w-full h-full"
+                    whileHover={{ scale: 1.12 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
+                    <Image
+                      src={item?.image?.url?.trim()}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width:768px) 50vw, (max-width:1200px) 33vw, 25vw"
+                      className="object-cover"
+                      priority={index < 4} // LCP optimization
+                    />
+                  </motion.div>
+                </div>
 
-              {/* Image Container */}
-              <div className="relative w-full aspect-[3/4]">
-
-                <Image
-                  src={item?.image?.url?.trim()}
-                  alt={item.title}  
-                  fill
-                  sizes="(max-width:768px) 50vw, (max-width:1200px) 33vw, 25vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                {/* Overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 bg-gradient-to-t from-obsidian-950/80 via-transparent to-transparent"
                 />
 
-              </div>
+                {/* Caption */}
+                <motion.div
+                  initial={{ y: 40, opacity: 0 }}
+                  whileHover={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="absolute bottom-0 left-0 right-0 p-4"
+                >
+                  <p className="font-display text-sm text-champagne-100 font-medium">
+                    {item.title}
+                  </p>
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              {/* Caption */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <p className="font-display text-sm text-champagne-100 font-medium">
-                  {item.title}
-                </p>
-
-                <p className="font-body text-xs text-champagne-400/80 tracking-wider uppercase">
-                  {item.category}
-                </p>
-              </div>
-
-            </div>)
-
-          }
-          )}
-        </div>
+                  <p className="font-body text-xs text-champagne-400/80 tracking-wider uppercase">
+                    {item.category}
+                  </p>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
 
         {/* View Portfolio Button */}
         <div className="text-center mt-14">
@@ -158,8 +229,19 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
 
       {/* Lightbox */}
       {lightbox && (
-        <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-6"
+        <motion.div
+
+
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{
+            type: "spring",
+            stiffness: 200,
+            damping: 25,
+          }}
+
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-6 backdrop-blur "
           onClick={(e) => { setLightbox(null); e.stopPropagation() }}
         >
           <div
@@ -191,7 +273,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
                     width={1400}
                     height={900}
                     priority={index === current}
-                    className="object-contain max-h-[90vh] w-full rounded-xl"
+                    className="object-contain max-h-[90vh] w-full rounded-2xl backdrop-blur"
                   />
                 </div>
               ))}
@@ -236,7 +318,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
             </div>
 
           </div>
-        </div>
+        </motion.div>
       )}
     </section>
   );
