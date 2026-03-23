@@ -18,16 +18,15 @@ const container = {
 const itemVariant = {
   hidden: {
     opacity: 0,
-    y: 40,
-    scale: 0.95,
+    y: 30,
+    filter: "blur(10px)",
   },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
+    filter: "blur(0px)",
     transition: {
       duration: 0.6,
-      ease: [0.22, 1, 0.36, 1], // premium easing
     },
   },
 };
@@ -57,6 +56,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
       ? data.items
       : data.items.filter((item) => item.category === active);
 
+  // console.log({ filtered })
 
   const [current, setCurrent] = useState(0);
 
@@ -67,7 +67,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
   const prevSlide = () => {
     setCurrent((prev) => (prev - 1 + filtered.length) % filtered.length);
   };
-
+  // console.log({ current })
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -80,11 +80,17 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
     touchEndX.current = e.targetTouches[0].clientX;
   };
 
+
+  const isButtonClick = useRef(false);
   const handleTouchEnd = () => {
+    if (isButtonClick.current) {
+      isButtonClick.current = false;
+      return;
+    }
     const distance = touchStartX.current - touchEndX.current;
 
-    if (distance > 60) nextSlide(); // swipe left
-    if (distance < -60) prevSlide(); // swipe right
+    if (distance > 60) nextSlide();
+    if (distance < -60) prevSlide();
   };
 
   useEffect(() => {
@@ -100,7 +106,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightbox]);
 
-
+  const [hasAnimated, setHasAnimated] = useState(false);
 
 
   return (
@@ -108,24 +114,24 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}
-        <motion.div  initial="hidden"
+        <motion.div initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
           variants={container}
-         className="text-center mb-14 space-y-5">
+          className="text-center mb-14 space-y-5">
           <motion.div variants={fadeUp} className="inline-flex items-center gap-3">
-            < div  className="h-px w-12 bg-champagne-600" />
+            < div className="h-px w-12 bg-champagne-600" />
             <span className="font-body text-xs text-champagne-400 tracking-[0.25em] uppercase">
               {data.badge}
             </span>
             <div className="h-px w-12 bg-champagne-600" />
           </motion.div>
 
-          <motion.h2  variants={fadeUp} className="font-display text-5xl lg:text-6xl text-champagne-50 font-light leading-tight">
+          <motion.h2 variants={fadeUp} className="font-display text-5xl lg:text-6xl text-champagne-50 font-light leading-tight">
             {data.headline}
           </motion.h2>
 
-          <motion.p  variants={fadeUp} className="font-body text-champagne-200/60 max-w-xl mx-auto leading-relaxed">
+          <motion.p variants={fadeUp} className="font-body text-champagne-200/60 max-w-xl mx-auto leading-relaxed">
             {data.subheadline}
           </motion.p>
         </motion.div>
@@ -147,14 +153,15 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
         </div>
 
         {/* Responsive Grid */}
-        <motion.div
+        {<motion.div
           variants={container}
-          initial="hidden"
+          initial={hasAnimated ? false : "hidden"}
           whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, margin: "-60px" }}
+          onAnimationComplete={() => setHasAnimated(true)}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
         >
-          {filtered.map((item, index) => {
+          {filtered.length > 0 && filtered.map((item, index) => {
             return (
               <motion.div
                 key={item.id}
@@ -214,7 +221,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
               </motion.div>
             );
           })}
-        </motion.div>
+        </motion.div>}
 
         {/* View Portfolio Button */}
         <div className="text-center mt-14">
@@ -265,7 +272,7 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
               className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${current * 100}%)` }}
             >
-              {filtered.map((item, index) => (
+              {filtered.length > 0 && filtered.map((item, index) => (
                 <div key={item?.image?.url + index} className="min-w-full flex justify-center">
                   <Image
                     src={item?.image?.url?.trim()}
@@ -281,14 +288,18 @@ export default function PortfolioSection({ data }: { data: PortfolioData }) {
 
             {/* Arrows */}
             <button
-              onClick={(e) => { prevSlide(); e.stopPropagation() }}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+              onClick={(e) => { isButtonClick.current = true; prevSlide(); e.stopPropagation() }}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 px-3 py-2 rounded-full"
             >
               ‹
             </button>
 
             <button
-              onClick={(e) => { nextSlide(); e.stopPropagation() }}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+              onClick={(e) => { isButtonClick.current = true; nextSlide(); e.stopPropagation() }}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 px-3 py-2 rounded-full"
             >
               ›
